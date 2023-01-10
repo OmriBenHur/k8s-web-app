@@ -1,0 +1,21 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: app-ingress
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - movieposter.com
+    secretName: cert-secret
+  rules:
+  - host: "movieposter.com"
+    http:
+      paths:
+        - pathType: Prefix
+          path: "/"
+          backend:
+            service:
+              name: web-app
+              port:
+                number: 80
