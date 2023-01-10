@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: web
-        image:  k8s-api-web-app
+        image:  omribenhur/k8s-poster-app
         imagePullPolicy: IfNotPresent
         env:
           - name: api-key
