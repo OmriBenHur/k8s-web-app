@@ -9,7 +9,7 @@ import requests
 class TMAPI():
 
     def __init__(self):
-        self.key = getenv("key")
+        self.key = getenv("api-key")
         self.url = f'http://api.themoviedb.org/3/configuration?api_key={self.key}'
         self.img_url = 'http://api.themoviedb.org/3/movie/{imdbid}/images?api_key={KEY}'
         self.r = requests.get(self.url)
@@ -50,7 +50,7 @@ class TMAPI():
 class Mongo(TMAPI):
     def __init__(self, host, port):
         TMAPI.__init__(self)
-        self.mdb = MongoClient(host, port)
+        self.mdb = MongoClient(host, port, username=getenv("mongo-username"), password=getenv("mongo-password"))
         self.database = self.mdb['posters']
         self.coll = self.database['fs.files']
         self.fs = gridfs.GridFS(self.database)

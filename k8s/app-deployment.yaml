@@ -16,14 +16,24 @@ spec:
     spec:
       containers:
       - name: web
-        image: k8s-web-app
+        image:  k8s-api-web-app
         imagePullPolicy: IfNotPresent
         env:
-          - name: key
+          - name: api-key
             valueFrom:
               secretKeyRef:
                 name: app-secret
                 key: api-key
+          - name: mongo-username
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongo-root-username
+          - name: mongo-password
+            valueFrom:
+              secretKeyRef:
+                name: mongodb-secret
+                key: mongo-root-password
         ports:
         - containerPort: 80
 
