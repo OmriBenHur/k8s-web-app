@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-app
+  labels:
+    app: {{ .Values.app.label}}
+spec:
+  replicas: {{ .Values.app.replicaCount}}
+  selector:
+    matchLabels:
+      app: {{ .Values.app.label}}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.app.label}}
+    spec:
+      containers:
+      - name: {{ .Chart.Name }}-{{ .Values.app.label }}
+        image:  {{ .Values.app.repository }}:{{ .Values.app.tag }}
+        imagePullPolicy: {{ .Values.app.pullPolicy }}
+        env:
+          - name: api-key
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-app-secret
+                key: api-key
+          - name: mongo-username
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-mongodb-secret
+                key: mongo-root-username
+          - name: mongo-password
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Release.Name }}-mongodb-secret
+                key: mongo-root-password
+        ports:
+          - containerPort: {{ .Values.app.containerPort }}
+
+---
+apiVersion: v1
+kind: Service
+
+metadata:
+  name: {{ .Release.Name }}-web-app
+spec:
+  type: {{ .Values.appService.type }}
+  selector:
+    app: {{ .Values.app.label}}
+  ports:
+    - protocol: {{ .Values.appService.protocol | default "TCP"}}
+      port: {{ .Values.appService.port }}
+      targetPort: {{ .Values.app.containerPort }}
+

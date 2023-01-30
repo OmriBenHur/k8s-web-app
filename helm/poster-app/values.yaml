@@ -1,0 +1,45 @@
+
+app:
+  repository: omribenhur/k8s-poster-app
+  tag: latest
+  pullPolicy: IfNotPresent
+  containerPort: 80
+  replicaCount: 1
+  label: web
+
+mongo:
+  repository: mongo
+  tag: latest
+  pullPolicy: IfNotPresent
+  containerPort: 27017
+  replicaCount: 1
+  label: mongodb
+
+appService:
+  type: ClusterIP
+  port: 80
+  protocol: TCP
+
+mongoService:
+  type: ClusterIP
+  port: 27017
+  protocol: TCP
+
+appSecret:
+  apiKey:
+
+mongoSecret:
+  rootUsername: username
+  rootPassword: password
+
+certificate:
+  crt:
+  tlsKey:
+
+appIngress:
+  enabled: true
+  className: nginx
+  domain: movieposter.com
+  pathType: Prefix
+  path: /
+
