@@ -152,6 +152,7 @@ minikube start
 - appSecret.apiKey (your previously created TMDB api key)
 - certificate.crt (the DOMAIN_NAME.crt you created/have)
 - certificate.tlsKey (the DOMAIN_NAME.key)
+- appIngress.domain (the domain name you have configured the certificate to)
 - optionally you can change the values of the mongodb root username and password
 ### 5. in the command line enter:
 ```commandline
